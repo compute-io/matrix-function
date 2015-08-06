@@ -2,5 +2,7 @@ TODO
 ====
 
 1. 	Factory for known number of matrices
-2.  raw api
-3. 	
+	-	code generation
+		-	options up-front?
+		-	factory versus optimized
+2.  
