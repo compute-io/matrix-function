@@ -1,6 +1,5 @@
 TODO
 ====
 
-1. 	Factory for known number of matrices
-2.  note in README that `create` uses `eval`
-3. 
+1. 	note in README that `factory` and `create` use `eval`
+2. 
