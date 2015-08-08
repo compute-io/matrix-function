@@ -20,13 +20,171 @@ For use in the browser, use [browserify](https://github.com/substack/node-browse
 var matrixfun = require( 'compute-matrix-function' );
 ```
 
-#### matrixfcn( fcn, ...matrix[, options] )
+#### matrixfun( fcn, ...matrix[, options] )
 
 Applies a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
 
 ``` javascript
+var matrix = require( 'dstructs-matrix' );
 
+var mat = matrix( [5,5], 'int8' );
+/*
+    [ 0 0 0 0 0
+      0 0 0 0 0
+      0 0 0 0 0
+      0 0 0 0 0
+      0 0 0 0 0 ]
+*/
+
+function add5( val ) {
+	return val + 5;
+}
+
+var out = matrixfun( add5, mat );
+/*
+    [ 5 5 5 5 5
+      5 5 5 5 5
+      5 5 5 5 5
+      5 5 5 5 5
+      5 5 5 5 5 ]
+*/
 ```
+
+The function accepts the following `options`:
+
+*	__dtype__: output data type. Default: `float64`.
+*	__output__: `boolean` indicating whether an output [`matrix`](https://github.com/dstructs/matrix) has been provided. Default: `false`.
+
+By default, the output [`matrix`](https://github.com/dstructs/matrix) data type is `float64` in order to preserve precision. To specify a different data type, set the `dtype` option (see [`matrix`](https://github.com/dstructs/matrix) for a list of acceptable data types).
+
+``` javascript
+var out = matrixfun( add, mat, {
+	'dtype': 'int8';
+});
+/*
+    [ 5 5 5 5 5
+      5 5 5 5 5
+      5 5 5 5 5
+      5 5 5 5 5
+      5 5 5 5 5 ]
+*/
+var dtype = out.dtype;
+// returns 'int8'
+```
+
+By default, the `function` returns a new [`matrix`](https://github.com/dstructs/matrix). To mutate a [`matrix`](https://github.com/dstructs/matrix) (e.g., when input values can be discarded or when optimizing memory usage), set the `output` option to `true` to indicate that an output [`matrix`](https://github.com/dstructs/matrix) has been provided as the __first__ [`matrix`](https://github.com/dstructs/matrix) argument.
+
+``` javascript
+var out = matrix( [5,5], 'int8' );
+/*
+    [ 0 0 0 0 0
+      0 0 0 0 0
+      0 0 0 0 0
+      0 0 0 0 0
+      0 0 0 0 0 ]
+*/
+
+matrixfun( add, out, mat, {
+	'output': 'true';
+});
+/*
+      [ 5 5 5 5 5
+        5 5 5 5 5
+out =   5 5 5 5 5
+        5 5 5 5 5
+        5 5 5 5 5 ]
+*/
+```
+
+### Factory
+
+The main exported `function` does __not__ make any assumptions regarding the number of input [`matrices`](https://github.com/dstructs/matrix). To create a reusable [`matrix`](https://github.com/dstructs/matrix) function where the number of input [`matrices`](https://github.com/dstructs/matrix) is known, a factory method is provided.
+
+
+#### matrixfun.factory( num[, options] )
+
+Creates an apply `function` for applying a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
+
+``` javascript
+var mfcn = matrixfun.factory( 2 );
+
+function add( x, y ) {
+	return x + y;
+}
+
+var mat1 = matrix( [5,5], 'int8' ),
+	mat2 = matrix( [5,5], 'int8' );
+
+for ( var i = 0; i < 5; i++ ) {
+	for ( var j = 0; j < 5; j++ ) {
+		mat1.set( i, j, 5 );
+		mat2.set( i, j, i*5 + j );
+	}
+}
+/*
+       [ 5 5 5 5 5
+         5 5 5 5 5
+mat1 =   5 5 5 5 5
+         5 5 5 5 5
+         5 5 5 5 5 ]
+
+       [  0  1  2  3  4
+          5  6  7  8  9
+mat2 =   10 11 12 13 14
+         15 16 17 18 19
+         20 21 22 23 24 ]
+*/
+
+var out = mfcn( add, mat1, mat2 );
+/*
+    [  5  6  7  8  9
+      10 11 12 13 14
+      15 16 17 18 19
+      20 21 22 23 24
+      25 26 27 28 29 ]
+*/
+```
+
+The function accepts the following `options`:
+
+*	__dtype__: output data type. Default: `float64`.
+*	__fcn__: `function` to apply to each [`matrix`](https://github.com/dstructs/matrix) element.
+
+If the `function` to apply is already known, set the `fcn` option.
+
+``` javascript
+var madd = matrixfun.factory( 2, {
+	'fcn': add
+});
+
+var out = madd( mat1, mat2 );
+/*
+    [  5  6  7  8  9
+      10 11 12 13 14
+      15 16 17 18 19
+      20 21 22 23 24
+      25 26 27 28 29 ]
+*/
+```
+
+
+
+### Generate
+
+
+
+
+
+### Raw
+
+For performance, lower-level APIs are provided which forgo some of the guarantees of the aboves APIs, such as input argument validation. While use of the above APIs is encouraged in REPL environments, use of the lower-level interfaces may be warranted when arguments are of a known type or when performance is paramount.
+
+#### matrixfun.raw( fcn, ...matrix[, options] )
+
+
+
+
+
 
 
 ## Examples
