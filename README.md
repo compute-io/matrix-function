@@ -102,7 +102,7 @@ out =   5 5 5 5 5
 The main exported `function` does __not__ make any assumptions regarding the number of input [`matrices`](https://github.com/dstructs/matrix). To create a reusable [`matrix`](https://github.com/dstructs/matrix) function where the number of input [`matrices`](https://github.com/dstructs/matrix) is known, a factory method is provided.
 
 
-#### matrixfun.factory( num[, options] )
+#### matrixfun.factory( [fcn,] num[, options] )
 
 Creates an apply `function` to apply a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
 
@@ -149,14 +149,11 @@ var out = mfun( add, mat1, mat2 );
 The function accepts the following `options`:
 
 *	__dtype__: output data type. Default: `float64`.
-*	__fcn__: `function` to apply to each [`matrix`](https://github.com/dstructs/matrix) element.
 
-If the apply `function` is already known, set the `fcn` option.
+An apply `function` may be provided during `function` creation.
 
 ``` javascript
-var madd = matrixfun.factory( 2, {
-	'fcn': add
-});
+var madd = matrixfun.factory( add, 2 );
 
 var out = madd( mat1, mat2 );
 /*
@@ -206,7 +203,7 @@ out = mfcn( subtract, out, mat2, mat1 );
 */
 ```
 
-If the apply `function` is already known, provide an apply `function`.
+An apply `function` may be provided during `function` creation.
 
 ``` javascript
 var madd = matrixfun.create( add, 2 );
