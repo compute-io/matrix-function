@@ -202,10 +202,10 @@ To facilitate using [`matrix`](https://github.com/dstructs/matrix) functions wit
 
 #### matrixfun.create( [fcn,] num )
 
-Creates an apply `function` to apply a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
+Creates an apply `function` to apply a `function` to each [`matrix`](https://github.com/dstructs/matrix) element, where `num` is the number of input [`matrices`](https://github.com/dstructs/matrix) __including__ the output [`matrix`](https://github.com/dstructs/matrix).
 
 ``` javascript
-var mfcn = matrixfun.create( 2 );
+var mfcn = matrixfun.create( 3 );
 
 var out = mfcn( add, out, mat1, mat2 );
 /*
@@ -233,7 +233,7 @@ out = mfcn( subtract, out, mat2, mat1 );
 An apply `function` may be provided during `function` creation.
 
 ``` javascript
-var madd = matrixfun.create( add, 2 );
+var madd = matrixfun.create( add, 3 );
 
 var out = madd( out, mat1, mat2 );
 /*

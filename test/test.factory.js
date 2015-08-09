@@ -8,7 +8,7 @@ var chai = require( 'chai' ),
 	noop = require( './fixtures/noop.js' ),
 	add1 = require( './fixtures/add1.js' ),
 	add = require( './fixtures/add.js' ),
-	apply = require( './../lib/apply.js' );
+	factory = require( './../lib/factory.js' );
 
 
 // VARIABLES //
@@ -19,13 +19,35 @@ var expect = chai.expect,
 
 // TESTS //
 
-describe( 'apply', function tests() {
+describe( 'apply factory', function tests() {
 
 	it( 'should export a function', function test() {
-		expect( apply ).to.be.a( 'function' );
+		expect( factory ).to.be.a( 'function' );
 	});
 
-	it( 'should throw an error if not provided a function', function test() {
+	it( 'should throw an error if not provided the number of input matrices', function test() {
+		var values = [
+			'5',
+			NaN,
+			true,
+			null,
+			undefined,
+			[],
+			{},
+			function(){}
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			expect( badValue( values[i] ) ).to.throw( TypeError );
+		}
+		function badValue( value ) {
+			return function() {
+				factory( value );
+			};
+		}
+	});
+
+	it( 'should throw an error if provided an apply function argument which is not a function', function test() {
 		var values = [
 			'5',
 			5,
@@ -42,7 +64,7 @@ describe( 'apply', function tests() {
 		}
 		function badValue( value ) {
 			return function() {
-				apply( value, matrix([5,5]) );
+				factory( value, 2, {} );
 			};
 		}
 	});
@@ -64,7 +86,7 @@ describe( 'apply', function tests() {
 		}
 		function badValue( value ) {
 			return function() {
-				apply( noop, matrix([5,5]), value );
+				factory( noop, 2, value );
 			};
 		}
 	});
@@ -82,28 +104,67 @@ describe( 'apply', function tests() {
 		];
 
 		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[i] ) ).to.throw( TypeError );
+			expect( badValue1( values[i] ) ).to.throw( TypeError );
+			expect( badValue2( values[i] ) ).to.throw( TypeError );
 		}
-		function badValue( value ) {
+		function badValue1( value ) {
 			return function() {
-				apply( noop, matrix([5,5]), {
+				factory( 2, {
+					'dtype': value
+				});
+			};
+		}
+		function badValue2( value ) {
+			return function() {
+				factory( noop, 2, {
 					'dtype': value
 				});
 			};
 		}
 	});
 
-	it( 'should throw an error if not provided input matrices', function test() {
+	it( 'should return a function', function test() {
+		var apply;
+
+		apply = factory( 2 );
+		assert.isFunction( apply );
+
+		apply = factory( noop, 2 );
+		assert.isFunction( apply );
+
+		apply = factory( noop, 2, {} );
+		assert.isFunction( apply );
+	});
+
+	it( 'should throw an error if not provided the correct number of input matrices', function test() {
+		var apply;
+
+		apply = factory( 2 );
 		expect( foo ).to.throw( Error );
+		expect( foo2 ).to.throw( Error );
+
+		apply = factory( noop, 2 );
+		expect( bar ).to.throw( Error );
+
 		function foo() {
-			apply( noop, {
-				'out': true
-			});
+			apply( noop );
+		}
+		function foo2() {
+			var m = matrix( [2,2] );
+			apply( noop, m, m, m );
+		}
+		function bar() {
+			apply( matrix( [2,2] ) );
 		}
 	});
 
 	it( 'should throw an error if not provided matrix-like arguments', function test() {
-		var values = [
+		var values,
+			apply1,
+			apply2,
+			apply3;
+
+		values = [
 			'5',
 			5,
 			NaN,
@@ -115,6 +176,10 @@ describe( 'apply', function tests() {
 			function(){}
 		];
 
+		apply1 = factory( noop, 1 );
+		apply2 = factory( 2 );
+		apply3 = factory( noop, 3 );
+
 		for ( var i = 0; i < values.length; i++ ) {
 			expect( badValue1( values[i] ) ).to.throw( TypeError );
 			expect( badValue2( values[i] ) ).to.throw( TypeError );
@@ -122,27 +187,32 @@ describe( 'apply', function tests() {
 		}
 		function badValue1( value ) {
 			return function() {
-				apply( noop, value );
+				apply1( value );
 			};
 		}
 		function badValue2( value ) {
 			return function() {
-				apply( noop, matrix([5,5]), value, {} );
+				apply2( noop, matrix([5,5]), value );
 			};
 		}
 		function badValue3( value ) {
 			return function() {
-				apply( noop, matrix([5,5]), matrix([5,5]), value, {} );
+				apply3( matrix([5,5]), matrix([5,5]), value );
 			};
 		}
 	});
 
 	it( 'should throw an error if provided incompatible matrix-like arguments', function test() {
-		var values = [
+		var values,
+			apply;
+
+		values = [
 			matrix([4,4]),
 			matrix([0,0]),
 			matrix([5,4])
 		];
+
+		apply = factory( 2 );
 
 		for ( var i = 0; i < values.length; i++ ) {
 			expect( badValue( values[i] ) ).to.throw( Error );
@@ -154,8 +224,36 @@ describe( 'apply', function tests() {
 		}
 	});
 
+	it( 'should throw an error if provided an apply function argument which is not a function', function test() {
+		var values,
+			apply;
+
+		values = [
+			'5',
+			5,
+			NaN,
+			true,
+			null,
+			undefined,
+			[],
+			{}
+		];
+
+		apply = factory( 1 );
+
+		for ( var i = 0; i < values.length; i++ ) {
+			expect( badValue( values[i] ) ).to.throw( TypeError );
+		}
+		function badValue( value ) {
+			return function() {
+				apply( value, matrix([2,2]) );
+			};
+		}
+	});
+
 	it( 'should apply a function to a single matrix', function test() {
-		var mat,
+		var apply,
+			mat,
 			out,
 			d, i;
 
@@ -165,12 +263,20 @@ describe( 'apply', function tests() {
 		}
 		mat = matrix( d, [2,2], 'int8' );
 
+		// General apply function...
+		apply = factory( 1 );
 		out = apply( add1, mat );
+		assert.strictEqual( out.toString(), '2,2;2,2' );
+
+		// Specialized apply function...
+		apply = factory( add1, 1 );
+		out = apply( mat );
 		assert.strictEqual( out.toString(), '2,2;2,2' );
 	});
 
 	it( 'should apply a function to multiple matrices', function test() {
-		var mat1,
+		var apply,
+			mat1,
 			mat2,
 			out,
 			d, i;
@@ -187,12 +293,20 @@ describe( 'apply', function tests() {
 		}
 		mat2 = matrix( d, [2,2], 'int8' );
 
+		// General apply function...
+		apply = factory( 2 );
 		out = apply( add, mat1, mat2 );
+		assert.strictEqual( out.toString(), '3,3;3,3' );
+
+		// Specialized apply function...
+		apply = factory( add, 2 );
+		out = apply( mat1, mat2 );
 		assert.strictEqual( out.toString(), '3,3;3,3' );
 	});
 
 	it( 'should apply a function and return a matrix having a specified type', function test() {
-		var mat,
+		var apply,
+			mat,
 			out,
 			d, i;
 
@@ -202,30 +316,12 @@ describe( 'apply', function tests() {
 		}
 		mat = matrix( d, [2,2], 'int8' );
 
-		out = apply( add1, mat, {
+		apply = factory( add1, 1, {
 			'dtype': 'float32'
 		});
+		out = apply( mat );
+
 		assert.strictEqual( out.dtype, 'float32' );
-		assert.strictEqual( out.toString(), '2,2;2,2' );
-	});
-
-	it( 'should apply a function to a single matrix and use a provided output matrix', function test() {
-		var mat,
-			out,
-			actual,
-			d, i;
-
-		d = new Int8Array( 4 );
-		for ( i = 0; i < d.length; i++ ) {
-			d[ i ] = 1;
-		}
-		mat = matrix( d, [2,2], 'int8' );
-
-		out = matrix( [2,2] );
-		actual = apply( add1, out, mat, {
-			'out': true
-		});
-		assert.strictEqual( out, actual );
 		assert.strictEqual( out.toString(), '2,2;2,2' );
 	});
 

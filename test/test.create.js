@@ -47,7 +47,7 @@ describe( 'create apply', function tests() {
 		}
 	});
 
-	it( 'should throw an error if an apply function argument which is not a function', function test() {
+	it( 'should throw an error if provided an apply function argument which is not a function', function test() {
 		var values = [
 			'5',
 			5,
