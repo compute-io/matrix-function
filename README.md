@@ -59,7 +59,7 @@ The function accepts the following `options`:
 By default, the output [`matrix`](https://github.com/dstructs/matrix) data type is `float64` in order to preserve precision. To specify a different data type, set the `dtype` option (see [`matrix`](https://github.com/dstructs/matrix) for a list of acceptable data types).
 
 ``` javascript
-var out = matrixfun( add, mat, {
+var out = matrixfun( add5, mat, {
 	'dtype': 'int8';
 });
 /*
@@ -85,7 +85,7 @@ var out = matrix( [5,5], 'int8' );
       0 0 0 0 0 ]
 */
 
-matrixfun( add, out, mat, {
+matrixfun( add5, out, mat, {
 	'output': 'true';
 });
 /*
@@ -148,10 +148,6 @@ var out = mfun( add, mat1, mat2 );
 */
 ```
 
-The function accepts the following `options`:
-
-*	__dtype__: output data type. Default: `float64`.
-
 An apply `function` may be provided during `function` creation.
 
 ``` javascript
@@ -165,6 +161,35 @@ var out = madd( mat1, mat2 );
       20 21 22 23 24
       25 26 27 28 29 ]
 */
+```
+
+The function accepts the following `options`:
+
+*	__dtype__: output data type. Default: `float64`.
+
+By default, the output [`matrix`](https://github.com/dstructs/matrix) data type is `float64` any time a function is applied. To specify a different data type, set the `dtype` option.
+
+``` javascript
+var madd = matrixfun.factory( add, 2, {
+	'dtype': 'int32';
+});
+
+var out = madd( mat1, mat2 );
+/*
+    [  5  6  7  8  9
+      10 11 12 13 14
+      15 16 17 18 19
+      20 21 22 23 24
+      25 26 27 28 29 ]
+*/
+
+var dtype = out.dtype;
+// returns 'int32'
+
+// ...and for all subsequent calls...
+out = madd( mat1, mat2 );
+dtype = out.dtype;
+// returns 'int32'
 ```
 
 __Note__: a factory `function` __always__ returns a new [`matrix`](https://github.com/dstructs/matrix).
