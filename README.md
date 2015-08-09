@@ -223,9 +223,54 @@ var out = madd( out, mat1, mat2 );
 ===
 ### Raw
 
-Lower-level APIs are provided which forgo some of the guarantees of the aboves APIs, such as input argument validation. While use of the above APIs are encouraged in REPL environments, use of the lower-level interfaces may be warranted when arguments are of a known type or when performance is paramount.
+Lower-level APIs are provided which forgo some of the guarantees of the above APIs, such as input argument validation. While use of the above APIs are encouraged in REPL environments, use of the lower-level interfaces may be warranted when arguments are of a known type or when performance is paramount.
 
 #### matrixfun.raw( fcn, ...matrix[, options] )
+
+Applies a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
+
+``` javascript
+var mat = matrix( [5,5], 'int8' );
+/*
+    [ 0 0 0 0 0
+      0 0 0 0 0
+      0 0 0 0 0
+      0 0 0 0 0
+      0 0 0 0 0 ]
+*/
+
+var out = matrixfun.raw( add5, mat );
+/*
+    [ 5 5 5 5 5
+      5 5 5 5 5
+      5 5 5 5 5
+      5 5 5 5 5
+      5 5 5 5 5 ]
+*/
+```
+
+The function accepts the same `options` as the main exported function.
+
+
+#### matrixfun.rawFactory( [fcn,] num[, options] )
+
+Creates an apply `function` to apply a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
+
+``` javascript
+var mfun = matrixfun.rawFactory( 2 );
+
+var out = mfun( add, mat1, mat2 );
+/*
+    [  5  6  7  8  9
+      10 11 12 13 14
+      15 16 17 18 19
+      20 21 22 23 24
+      25 26 27 28 29 ]
+*/
+```
+
+The function accepts the same `options` as `matrixfun.factory()`.
+
 
 
 
