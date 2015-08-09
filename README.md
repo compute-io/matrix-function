@@ -96,6 +96,7 @@ out =   5 5 5 5 5
 */
 ```
 
+===
 ### Factory
 
 The main exported `function` does __not__ make any assumptions regarding the number of input [`matrices`](https://github.com/dstructs/matrix). To create a reusable [`matrix`](https://github.com/dstructs/matrix) function where the number of input [`matrices`](https://github.com/dstructs/matrix) is known, a factory method is provided.
@@ -103,10 +104,10 @@ The main exported `function` does __not__ make any assumptions regarding the num
 
 #### matrixfun.factory( num[, options] )
 
-Creates an apply `function` for applying a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
+Creates an apply `function` to apply a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
 
 ``` javascript
-var mfcn = matrixfun.factory( 2 );
+var mfun = matrixfun.factory( 2 );
 
 function add( x, y ) {
 	return x + y;
@@ -135,7 +136,7 @@ mat2 =   10 11 12 13 14
          20 21 22 23 24 ]
 */
 
-var out = mfcn( add, mat1, mat2 );
+var out = mfun( add, mat1, mat2 );
 /*
     [  5  6  7  8  9
       10 11 12 13 14
@@ -150,7 +151,7 @@ The function accepts the following `options`:
 *	__dtype__: output data type. Default: `float64`.
 *	__fcn__: `function` to apply to each [`matrix`](https://github.com/dstructs/matrix) element.
 
-If the `function` to apply is already known, set the `fcn` option.
+If the apply `function` is already known, set the `fcn` option.
 
 ``` javascript
 var madd = matrixfun.factory( 2, {
@@ -167,23 +168,74 @@ var out = madd( mat1, mat2 );
 */
 ```
 
+__Note__: a factory `function` __always__ returns a new [`matrix`](https://github.com/dstructs/matrix).
 
 
-### Generate
+===
+### Create
+
+To facilitate using [`matrix`](https://github.com/dstructs/matrix) functions within a larger library where input arguments are of known types and where memory management occurs externally, a method to create minimal [`matrix`](https://github.com/dstructs/matrix) functions is provided.
+
+#### matrixfun.create( [fcn,] num )
+
+Creates an apply `function` to apply a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
+
+``` javascript
+var mfcn = matrixfun.create( 2 );
+
+var out = mfcn( add, out, mat1, mat2 );
+/*
+    [  5  6  7  8  9
+      10 11 12 13 14
+      15 16 17 18 19
+      20 21 22 23 24
+      25 26 27 28 29 ]
+*/
+
+function subtract( x, y ) {
+	return x - y;
+}
+
+out = mfcn( subtract, out, mat2, mat1 );
+/*
+    [ -5 -4 -3 -2 -1
+       0  1  2  3  4
+       5  6  7  8  9
+      10 11 12 13 14
+      15 16 17 18 19 ]
+*/
+```
+
+If the apply `function` is already known, provide an apply `function`.
+
+``` javascript
+var madd = matrixfun.create( add, 2 );
+
+var out = madd( out, mat1, mat2 );
+/*
+    [  5  6  7  8  9
+      10 11 12 13 14
+      15 16 17 18 19
+      20 21 22 23 24
+      25 26 27 28 29 ]
+*/
+```
 
 
 
-
-
+===
 ### Raw
 
-For performance, lower-level APIs are provided which forgo some of the guarantees of the aboves APIs, such as input argument validation. While use of the above APIs is encouraged in REPL environments, use of the lower-level interfaces may be warranted when arguments are of a known type or when performance is paramount.
+Lower-level APIs are provided which forgo some of the guarantees of the aboves APIs, such as input argument validation. While use of the above APIs are encouraged in REPL environments, use of the lower-level interfaces may be warranted when arguments are of a known type or when performance is paramount.
 
 #### matrixfun.raw( fcn, ...matrix[, options] )
 
 
 
 
+## Notes
+
+*	Both exported factory methods, as well as the `.create()` method use `eval()`. Beware when using these methods in the browser as they may violate your [content security policy](https://developer.mozilla.org/en-US/docs/Web/Security/CSP) (CSP). 
 
 
 
