@@ -103,7 +103,7 @@ out =   5 5 5 5 5
 The main exported `function` does __not__ make any assumptions regarding the number of input [`matrices`](https://github.com/dstructs/matrix). To create a reusable [`matrix`](https://github.com/dstructs/matrix) function where the number of input [`matrices`](https://github.com/dstructs/matrix) is known, a factory method is provided.
 
 
-<a name="matrixfcn-factory"></a>
+<a name="matrixfun-factory"></a>
 #### matrixfun.factory( [fcn,] num[, options] )
 
 Creates an apply `function` to apply a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
