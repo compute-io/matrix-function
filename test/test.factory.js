@@ -25,9 +25,11 @@ describe( 'apply factory', function tests() {
 		expect( factory ).to.be.a( 'function' );
 	});
 
-	it( 'should throw an error if not provided the number of input matrices', function test() {
+	it( 'should throw an error if not provided the number of input matrices as a positive integer', function test() {
 		var values = [
 			'5',
+			Math.PI,
+			-1,
 			NaN,
 			true,
 			null,
