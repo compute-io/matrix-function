@@ -198,7 +198,7 @@ __Note__: a factory `function` __always__ returns a new [`matrix`](https://githu
 ===
 ### Create
 
-To facilitate using [`matrix`](https://github.com/dstructs/matrix) functions within a larger library where input arguments are of known types and where memory management occurs externally, a method to create minimal [`matrix`](https://github.com/dstructs/matrix) functions is provided.
+To facilitate using [`matrix`](https://github.com/dstructs/matrix) functions within an application where input arguments are of known types and where memory management occurs externally, a method to create minimal [`matrix`](https://github.com/dstructs/matrix) functions is provided.
 
 #### matrixfun.create( [fcn,] num )
 
