@@ -20,6 +20,7 @@ For use in the browser, use [browserify](https://github.com/substack/node-browse
 var matrixfun = require( 'compute-matrix-function' );
 ```
 
+<a name="matrixfun"></a>
 #### matrixfun( fcn, ...matrix[, options] )
 
 Applies a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
@@ -102,6 +103,7 @@ out =   5 5 5 5 5
 The main exported `function` does __not__ make any assumptions regarding the number of input [`matrices`](https://github.com/dstructs/matrix). To create a reusable [`matrix`](https://github.com/dstructs/matrix) function where the number of input [`matrices`](https://github.com/dstructs/matrix) is known, a factory method is provided.
 
 
+<a name="matrixfcn-factory"></a>
 #### matrixfun.factory( [fcn,] num[, options] )
 
 Creates an apply `function` to apply a `function` to each [`matrix`](https://github.com/dstructs/matrix) element.
@@ -249,7 +251,7 @@ var out = matrixfun.raw( add5, mat );
 */
 ```
 
-The function accepts the same `options` as the main exported function.
+The function accepts the same `options` as the main exported [function](#matrixfun).
 
 
 #### matrixfun.rawFactory( [fcn,] num[, options] )
@@ -269,7 +271,7 @@ var out = mfun( add, mat1, mat2 );
 */
 ```
 
-The function accepts the same `options` as `matrixfun.factory()`.
+The function accepts the same `options` as [`matrixfun.factory()`](#matrixfun-factory).
 
 
 
