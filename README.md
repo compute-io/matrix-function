@@ -167,7 +167,7 @@ The function accepts the following `options`:
 
 *	__dtype__: output data type. Default: `float64`.
 
-By default, the output [`matrix`](https://github.com/dstructs/matrix) data type is `float64` any time a function is applied. To specify a different data type, set the `dtype` option.
+By default, the output [`matrix`](https://github.com/dstructs/matrix) data type is `float64`. To specify a different data type, set the `dtype` option.
 
 ``` javascript
 var madd = matrixfun.factory( add, 2, {
