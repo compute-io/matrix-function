@@ -8,7 +8,7 @@ var chai = require( 'chai' ),
 	noop = require( './fixtures/noop.js' ),
 	add1 = require( './fixtures/add1.js' ),
 	add = require( './fixtures/add.js' ),
-	apply = require( './../lib/apply' );
+	apply = require( './../lib/apply.js' );
 
 
 // VARIABLES //
@@ -98,7 +98,7 @@ describe( 'apply', function tests() {
 		expect( foo ).to.throw( Error );
 		function foo() {
 			apply( noop, {
-				'output': true
+				'out': true
 			});
 		}
 	});
@@ -192,6 +192,24 @@ describe( 'apply', function tests() {
 		assert.strictEqual( out.toString(), '3,3;3,3' );
 	});
 
+	it( 'should apply a function and return a matrix having a specified type', function test() {
+		var mat,
+			out,
+			d, i;
+
+		d = new Int8Array( 4 );
+		for ( i = 0; i < d.length; i++ ) {
+			d[ i ] = 1;
+		}
+		mat = matrix( d, [2,2], 'int8' );
+
+		out = apply( add1, mat, {
+			'dtype': 'float32'
+		});
+		assert.strictEqual( out.dtype, 'float32' );
+		assert.strictEqual( out.toString(), '2,2;2,2' );
+	});
+
 	it( 'should apply a function to a single matrix and use a provided output matrix', function test() {
 		var mat,
 			out,
@@ -206,7 +224,7 @@ describe( 'apply', function tests() {
 
 		out = matrix( [2,2] );
 		actual = apply( add1, out, mat, {
-			'output': true
+			'out': true
 		});
 		assert.strictEqual( out, actual );
 		assert.strictEqual( out.toString(), '2,2;2,2' );

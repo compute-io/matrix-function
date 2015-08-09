@@ -54,7 +54,7 @@ var out = matrixfun( add5, mat );
 The function accepts the following `options`:
 
 *	__dtype__: output data type. Default: `float64`.
-*	__output__: `boolean` indicating whether an output [`matrix`](https://github.com/dstructs/matrix) has been provided. Default: `false`.
+*	__out__: `boolean` indicating whether an output [`matrix`](https://github.com/dstructs/matrix) has been provided. Default: `false`.
 
 By default, the output [`matrix`](https://github.com/dstructs/matrix) data type is `float64` in order to preserve precision. To specify a different data type, set the `dtype` option (see [`matrix`](https://github.com/dstructs/matrix) for a list of acceptable data types).
 
@@ -73,7 +73,7 @@ var dtype = out.dtype;
 // returns 'int8'
 ```
 
-By default, the `function` returns a new [`matrix`](https://github.com/dstructs/matrix). To mutate a [`matrix`](https://github.com/dstructs/matrix) (e.g., when input values can be discarded or when optimizing memory usage), set the `output` option to `true` to indicate that an output [`matrix`](https://github.com/dstructs/matrix) has been provided as the __first__ [`matrix`](https://github.com/dstructs/matrix) argument.
+By default, the `function` returns a new [`matrix`](https://github.com/dstructs/matrix). To mutate a [`matrix`](https://github.com/dstructs/matrix) (e.g., when input values can be discarded or when optimizing memory usage), set the `out` option to `true` to indicate that an output [`matrix`](https://github.com/dstructs/matrix) has been provided as the __first__ [`matrix`](https://github.com/dstructs/matrix) argument.
 
 ``` javascript
 var out = matrix( [5,5], 'int8' );
@@ -86,7 +86,7 @@ var out = matrix( [5,5], 'int8' );
 */
 
 matrixfun( add5, out, mat, {
-	'output': 'true';
+	'out': 'true';
 });
 /*
       [ 5 5 5 5 5
