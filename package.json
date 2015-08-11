@@ -1,6 +1,6 @@
 {
   "name": "compute-matrix-function",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Applies a function to each matrix element.",
   "author": {
     "name": "Athan Reines",
