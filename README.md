@@ -250,7 +250,7 @@ var out = madd( out, mat1, mat2 );
 ===
 ### Raw
 
-Lower-level APIs are provided which forgo some of the guarantees of the above APIs, such as input argument validation. While use of the above APIs are encouraged in REPL environments, use of the lower-level interfaces may be warranted when arguments are of a known type or when performance is paramount.
+Lower-level APIs are provided which forgo some of the guarantees of the above APIs, such as input argument validation. While use of the above APIs is encouraged in REPL environments, use of the lower-level interfaces may be warranted when arguments are of a known type or when performance is paramount.
 
 #### matrixfun.raw( fcn, ...matrix[, options] )
 
