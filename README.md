@@ -302,7 +302,7 @@ The function accepts the same `options` as [`matrixfun.factory()`](#matrixfun-fa
 
 ## Notes
 
-*	Both factory methods, as well as the `.create()` method, use `eval()`. Beware when using these methods in the browser as they may violate your [content security policy](https://developer.mozilla.org/en-US/docs/Web/Security/CSP) (CSP). 
+*	Both factory methods, as well as the `.create()` method, use dynamic code evaluation. Beware when using these methods in the browser as they may violate your [content security policy](https://developer.mozilla.org/en-US/docs/Web/Security/CSP) (CSP). 
 
 
 
