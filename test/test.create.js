@@ -92,8 +92,8 @@ describe( 'create apply', function tests() {
 			matrix([5,4])
 		];
 
-		apply1 = create( 2 );
-		apply2 = create( noop, 2 );
+		apply1 = create( 1 );
+		apply2 = create( noop, 1 );
 
 		for ( var i = 0; i < values.length; i++ ) {
 			expect( badValue1( values[i] ) ).to.throw( Error );
@@ -127,7 +127,7 @@ describe( 'create apply', function tests() {
 		// General apply...
 		out = matrix( [2,2] );
 
-		apply = create( 2 );
+		apply = create( 1 );
 		actual = apply( add1, out, mat );
 
 		assert.strictEqual( actual, out );
@@ -135,7 +135,7 @@ describe( 'create apply', function tests() {
 
 		// Apply a particular function...
 		out = matrix( [2,2] );
-		apply = create( add1, 2 );
+		apply = create( add1, 1 );
 
 		actual = apply( out, mat );
 		assert.strictEqual( out.toString(), '2,2;2,2' );
@@ -163,7 +163,7 @@ describe( 'create apply', function tests() {
 
 		// General apply...
 		out = matrix( [2,2] );
-		apply = create( 3 );
+		apply = create( 2 );
 
 		actual = apply( add, out, mat1, mat2 );
 		assert.strictEqual( actual, out );
@@ -171,7 +171,7 @@ describe( 'create apply', function tests() {
 
 		// Apply a particular function...
 		out = matrix( [2,2] );
-		apply = create( add, 3 );
+		apply = create( add, 2 );
 
 		actual = apply( out, mat1, mat2 );
 		assert.strictEqual( actual, out );
